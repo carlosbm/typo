@@ -53,6 +53,41 @@ And /^I am logged into the admin panel$/ do
   else
     assert page.has_content?('Login successful')
   end
+  visit '/admin/content'
+end
+
+And /^Blog entrance is created with title:text (.*[^:]):(.*)$/ do |title, content|
+  visit 'admin/content/new'
+  fill_in 'article_title', :with => title
+  fill_in 'article__body_and_extended_editor', :with => content
+  click_button  'Publish'
+  if page.respond_to? :should
+    page.should have_content('Article was successfully created')
+  else
+    assert page.has_content?('Article was successfully created')
+  end
+end
+
+And /^Blog entrances are created$/ do
+  visit 'admin/content/new'
+  fill_in 'article_title', :with => 'title1'
+  fill_in 'article__body_and_extended_editor', :with => 'text1'
+  click_button  'Publish'
+  if page.respond_to? :should
+    page.should have_content('Article was successfully created')
+  else
+    assert page.has_content?('Article was successfully created')
+  end
+  visit 'admin/content/new'
+  fill_in 'article_title', :with => 'title2'
+  fill_in 'article__body_and_extended_editor', :with => 'text2'
+  click_button  'Publish'
+  if page.respond_to? :should
+    page.should have_content('Article was successfully created')
+  else
+    assert page.has_content?('Article was successfully created')
+  end
+
 end
 
 # Single-line step scoper

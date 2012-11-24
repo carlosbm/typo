@@ -13,7 +13,7 @@ class Admin::ContentController < Admin::BaseController
 
   def index
     @search = params[:search] ? params[:search] : {}
-    
+    b = params
     @articles = Article.search_with_pagination(@search, {:page => params[:page], :per_page => this_blog.admin_display_elements})
 
     if request.xhr?
@@ -139,9 +139,33 @@ class Admin::ContentController < Admin::BaseController
 
   def real_action_for(action); { 'add' => :<<, 'remove' => :delete}[action]; end
 
+  def merge_with_article
+    @article = Article.find(params[:id])
+    @article_to_merge = Article.find(params[:merge_with][:keywords])
+    new_article = Article.get_or_build_article
+  #  @article = Article.get_or_build_article(id)
+    new_article.body_and_extended = @article.body_and_extended + @article_to_merge.body_and_extended
+   # new_article.body = @new_article.extended
+    new_article.author = @article.author
+    if new_article.save
+      destroy_the_draft unless @article.draft
+      set_article_categories
+      set_the_flash
+      redirect_to :action => 'index'
+      return
+    end
+
+
+  end
+
   def new_or_edit
+
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
+    if params[:merge_with]
+      id = nil
+    end
+
     @article = Article.get_or_build_article(id)
     @article.text_filter = current_user.text_filter if current_user.simple_editor?
 
@@ -167,6 +191,8 @@ class Admin::ContentController < Admin::BaseController
       save_attachments
       
       @article.state = "draft" if @article.draft
+
+
 
       if @article.save
         destroy_the_draft unless @article.draft
