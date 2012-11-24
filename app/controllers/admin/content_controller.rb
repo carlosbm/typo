@@ -162,8 +162,11 @@ class Admin::ContentController < Admin::BaseController
 
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
+    body_merge = ""
     if params[:merge_with]
       id = nil
+      @article_to_merge = Article.find(params[:merge_with][:keywords])
+      body_merge = @article_to_merge.body_and_extended
     end
 
     @article = Article.get_or_build_article(id)
@@ -193,7 +196,7 @@ class Admin::ContentController < Admin::BaseController
       @article.state = "draft" if @article.draft
 
 
-
+      @article.body_and_extended = @article.body_and_extended + body_merge
       if @article.save
         destroy_the_draft unless @article.draft
         set_article_categories
