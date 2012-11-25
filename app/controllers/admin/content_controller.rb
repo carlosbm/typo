@@ -198,7 +198,7 @@ class Admin::ContentController < Admin::BaseController
       
       @article.state = "draft" if @article.draft
 
-      if @article.body_and_extended != ""
+      if  body_merge  != ""
         # We are merging articles, merge text and delete original ones
         article_to_delete = Article.find(params[:id])
         article_to_delete.destroy()
