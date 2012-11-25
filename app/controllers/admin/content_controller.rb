@@ -167,6 +167,9 @@ class Admin::ContentController < Admin::BaseController
       id = nil
       @article_to_merge = Article.find(params[:merge_with])
       body_merge = @article_to_merge.body_and_extended
+
+
+
     end
 
     @article = Article.get_or_build_article(id)
@@ -195,8 +198,14 @@ class Admin::ContentController < Admin::BaseController
       
       @article.state = "draft" if @article.draft
 
+      if @article.body_and_extended != ""
+        # We are merging articles, merge text and delete original ones
+        article_to_delete = Article.find(params[:id])
+        article_to_delete.destroy()
+        @article_to_merge.destroy()
+        @article.body_and_extended = @article.body_and_extended + " " + body_merge
 
-      @article.body_and_extended = @article.body_and_extended + body_merge
+      end
       if @article.save
         destroy_the_draft unless @article.draft
         set_article_categories
