@@ -130,12 +130,12 @@
       <%= text_field 'article', 'keywords', {:autocomplete => 'off', :style => 'width: 100%'} %>
 
     </div>
-    <% if current_user.admin? %>
-    <h4><%= _("Merge Articles") %></h4>
+
+    <h4><%= _("Merge Articles") if current_user.admin? %></h4>
     <div class='class'>
       <input autocomplete="off" id="merge_with" name="merge_with" size="30" style="width: 100%" type="text"  />
     </div>
-    <% end %>
+
   </div>
   </div>
 
