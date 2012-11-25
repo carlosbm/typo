@@ -146,8 +146,15 @@
     <ul id='attachments' class='inputs-list'>
       <%= render 'admin/content/attachment', { :attachment_num => 1, :hidden => false } -%>
     </ul>
-  </div>    
   </div>
 
+  </div>
+  <h4><%= _("Merge Articles") %></h4>
+  <div class='class'>
+    <%= text_field 'merge_with', 'keywords', {:autocomplete => 'off', :style => 'width: 50'} %>
+    <button id="merge_button" title="Merge">Merge </button>
+  </div>
+  <%= auto_complete_field 'article_keywords', { :url => { :action => "auto_complete_for_article_keywords"}, :tokens => ','}%>
+</div>
 </div>
 
