@@ -163,9 +163,9 @@ class Admin::ContentController < Admin::BaseController
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
     body_merge = ""
-    if params[:merge_with]
+    if params[:merge_with] and params[:merge_with][:article_id] and params[:merge_with][:article_id] != ""
       id = nil
-      @article_to_merge = Article.find(params[:merge_with][:keywords])
+      @article_to_merge = Article.find(params[:merge_with][:article_id])
       body_merge = @article_to_merge.body_and_extended
     end
 
