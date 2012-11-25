@@ -164,9 +164,16 @@ class Admin::ContentController < Admin::BaseController
     id = params[:article][:id] if params[:article] && params[:article][:id]
     body_merge = ""
     if params[:merge_with] and params[:merge_with] != ""
-      id = nil
-      @article_to_merge = Article.find(params[:merge_with])
-      body_merge = @article_to_merge.body_and_extended
+      if !current_user.admin?
+        flash[:error] = _("Only administrators can merge articles.")
+        # set_the_flash
+        redirect_to :action => 'index'
+        return
+      else
+        id = nil
+        @article_to_merge = Article.find(params[:merge_with])
+        body_merge = @article_to_merge.body_and_extended
+      end
     end
 
     @article = Article.get_or_build_article(id)
