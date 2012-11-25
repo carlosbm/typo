@@ -199,12 +199,15 @@ class Admin::ContentController < Admin::BaseController
         # We are merging articles, merge text and delete original ones
         article_to_delete = Article.find(params[:id])
 
-        @article.comments += @article.comments + article_to_delete.comments
-        @article.comments += @article.comments  + @article_to_merge.comments
+        @article.comments << article_to_delete.comments
+        @article.comments << @article_to_merge.comments
+      #  @article.comments = @article.comments + article_to_delete.comments.clone +  @article_to_merge.comments.clone
+      #  @article.comments += @article.comments
         comentarios = @article.comments
         @article.body_and_extended = @article.body_and_extended + " " + body_merge
-        article_to_delete.destroy()
-        @article_to_merge.destroy()
+
+        comentarios2 = @article.comments
+
 
       end
       if @article.save
@@ -215,6 +218,11 @@ class Admin::ContentController < Admin::BaseController
         return
       end
     end
+    if  body_merge  != ""
+      article_to_delete.delete()
+      @article_to_merge.delete()
+    end
+
 
     @images = Resource.images_by_created_at.page(params[:page]).per(10)
     @resources = Resource.without_images_by_filename
