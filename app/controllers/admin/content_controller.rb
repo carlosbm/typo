@@ -201,6 +201,8 @@ class Admin::ContentController < Admin::BaseController
 
         @article.comments << article_to_delete.comments
         @article.comments << @article_to_merge.comments
+        article_to_delete.delete()
+        @article_to_merge.delete()
       #  @article.comments = @article.comments + article_to_delete.comments.clone +  @article_to_merge.comments.clone
       #  @article.comments += @article.comments
         comentarios = @article.comments
@@ -218,10 +220,7 @@ class Admin::ContentController < Admin::BaseController
         return
       end
     end
-    if  body_merge  != ""
-      article_to_delete.delete()
-      @article_to_merge.delete()
-    end
+
 
 
     @images = Resource.images_by_created_at.page(params[:page]).per(10)
