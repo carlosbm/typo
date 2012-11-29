@@ -4,11 +4,13 @@ Feature: Create Blog
   I want to create a blog
 
   Scenario: Create blog page shown
+    Flunk "Unimplemented"
     Given I am on the home page
     Then I should see "Welcome"
     And I should see "My Shiny Weblog!"
-
+#
   Scenario: Create blog page not shown when blog created
+    Flunk "Unimplemented"
     Given the blog is set up
     When I am on the home page
     Then I should not see "My Shiny Weblog!"
