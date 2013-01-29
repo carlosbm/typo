@@ -27,7 +27,7 @@ source :rubygems
 
 gem 'activesupport'
 gem 'thin'
-gem 'rails', '~> 3.0.10'
+gem 'rails', '~> 3.0.20'
 gem 'require_relative'
 gem 'htmlentities'
 gem 'json'
